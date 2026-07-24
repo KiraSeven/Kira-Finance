@@ -104,14 +104,14 @@ function renderLoginPage() {
     <div class="auth-screen">
       <div class="auth-screen__brand">
         <div class="sidebar__brand" style="padding:0;">
-          <span class="sidebar__brand-mark">K</span>
+          <img class="sidebar__brand-mark sidebar__brand-mark--img" src="icons/logo.png" alt="${APP_NAME}" />
           <span class="sidebar__brand-name">${APP_NAME}</span>
         </div>
         <div>
           <h2 class="text-xl" style="margin-bottom: var(--space-2);">Satu dashboard untuk seluruh keuangan sekolah.</h2>
           <p class="text-secondary">Pemasukan, pengeluaran, anggaran, dan laporan — tercatat rapi dan mudah diaudit.</p>
         </div>
-        <p class="text-tertiary" style="font-size: var(--text-xs);">&copy; ${new Date().getFullYear()} ${APP_NAME}</p>
+        <p class="text-tertiary" style="font-size: var(--text-xs);">&copy; ${new Date().getFullYear()} Kira Solution</p>
       </div>
       <div class="auth-screen__panel">
         <div class="auth-screen__form-wrap stack">
@@ -171,11 +171,11 @@ function renderErrorPage({ code, title, message }) {
     <div class="auth-screen">
       <div class="auth-screen__brand">
         <div class="sidebar__brand" style="padding:0;">
-          <span class="sidebar__brand-mark">K</span>
+          <img class="sidebar__brand-mark sidebar__brand-mark--img" src="icons/logo.png" alt="${APP_NAME}" />
           <span class="sidebar__brand-name">${APP_NAME}</span>
         </div>
         <div></div>
-        <p class="text-tertiary" style="font-size: var(--text-xs);">&copy; ${new Date().getFullYear()} ${APP_NAME}</p>
+        <p class="text-tertiary" style="font-size: var(--text-xs);">&copy; ${new Date().getFullYear()} Kira Solution</p>
       </div>
       <div class="auth-screen__panel">
         <div class="auth-screen__form-wrap stack" style="text-align:center; align-items:center;">

@@ -65,7 +65,7 @@ export function renderSidebar({ currentPath, onNavigate }) {
 
   el.innerHTML = `
     <div class="sidebar__brand">
-      <span class="sidebar__brand-mark">K</span>
+      <img class="sidebar__brand-mark sidebar__brand-mark--img" src="icons/logo.png" alt="${APP_NAME}" />
       <span class="sidebar__brand-name">${APP_NAME}</span>
     </div>
   `;

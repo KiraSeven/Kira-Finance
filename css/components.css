@@ -384,6 +384,12 @@
   flex-shrink: 0;
 }
 
+.sidebar__brand-mark--img {
+  background: transparent;
+  object-fit: contain;
+  padding: 2px;
+}
+
 .sidebar__brand-name {
   font-family: var(--font-display);
   font-weight: var(--weight-bold);
