@@ -1,0 +1,89 @@
+/**
+ * animations.css
+ * -----------------------------------------------------------------------
+ * Semua @keyframes & utility animasi terpusat di sini. Komponen lain hanya
+ * memanggil nama animasi ini via `animation:` — jangan definisikan
+ * keyframes baru di file lain.
+ * -----------------------------------------------------------------------
+ */
+
+@keyframes splash-loading {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(350%); }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes skeleton-shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes fade-out {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slide-down-fade {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scale-in {
+  from { opacity: 0; transform: scale(0.96); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes toast-in {
+  from { opacity: 0; transform: translateX(24px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes toast-out {
+  from { opacity: 1; transform: translateX(0); }
+  to   { opacity: 0; transform: translateX(24px); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 0 var(--color-accent-soft); }
+  50%      { box-shadow: 0 0 0 6px transparent; }
+}
+
+/* Utility classes */
+.anim-fade-in { animation: fade-in var(--duration-base) var(--ease-out) both; }
+.anim-slide-up { animation: slide-up var(--duration-base) var(--ease-out) both; }
+.anim-scale-in { animation: scale-in var(--duration-fast) var(--ease-out) both; }
+
+.modal-backdrop { animation: fade-in var(--duration-fast) var(--ease-out) both; }
+.modal { animation: scale-in var(--duration-base) var(--ease-out) both; }
+.toast { animation: toast-in var(--duration-base) var(--ease-out) both; }
+.toast--leaving { animation: toast-out var(--duration-fast) var(--ease-in-out) both; }
+
+.dropdown-menu { animation: slide-down-fade var(--duration-fast) var(--ease-out) both; }
+
+/* Stagger util untuk list/grid item (dipakai via inline style --stagger-index) */
+[data-stagger] {
+  animation: slide-up var(--duration-base) var(--ease-out) both;
+  animation-delay: calc(var(--stagger-index, 0) * 40ms);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

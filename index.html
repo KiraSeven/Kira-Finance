@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#070C18" />
+  <meta name="description" content="Sistem informasi keuangan sekolah — pencatatan pemasukan, pengeluaran, anggaran, dan laporan keuangan dalam satu dashboard." />
+  <title>Kira Finance — Keuangan Sekolah</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="icons/favicon.svg" />
+
+  <!-- Fonts: Sora (display) + Inter (body) + JetBrains Mono (angka/data) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <!-- Stylesheets (urutan penting: variables → layout → components → animations → responsive) -->
+  <link rel="stylesheet" href="css/variables.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json" />
+</head>
+<body>
+  <!-- Splash / initial loader, dilepas oleh app.js setelah init selesai -->
+  <div id="app-splash" class="app-splash" aria-hidden="true">
+    <div class="app-splash__mark">
+      <span class="app-splash__logo">Kira Finance</span>
+      <span class="app-splash__bar"><span class="app-splash__bar-fill"></span></span>
+    </div>
+  </div>
+
+  <!-- Root aplikasi. Semua view di-render ke sini oleh router.js -->
+  <div id="app" class="app" hidden></div>
+
+  <!-- Portal container untuk komponen global (diisi oleh components/modal.js, toast.js, loader.js) -->
+  <div id="modal-root" class="portal-root"></div>
+  <div id="toast-root" class="portal-root" aria-live="polite" aria-atomic="true"></div>
+  <div id="loader-root" class="portal-root"></div>
+
+  <!-- Fallback jika JS/module tidak didukung -->
+  <noscript>
+    <div class="noscript-block">
+      Aplikasi ini membutuhkan JavaScript untuk berjalan. Aktifkan JavaScript di browser Anda.
+    </div>
+  </noscript>
+
+  <!-- Entry point aplikasi (ES Module) -->
+  <script type="module" src="js/app.js"></script>
+
+  <!-- Service worker registration -->
+  <script type="module">
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').catch(() => {
+          /* registrasi gagal, aplikasi tetap jalan tanpa mode offline */
+        });
+      });
+    }
+  </script>
+</body>
+</html>

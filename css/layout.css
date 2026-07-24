@@ -1,0 +1,144 @@
+/**
+ * layout.css
+ * -----------------------------------------------------------------------
+ * Struktur halaman: shell aplikasi (sidebar + navbar + content), grid
+ * dashboard, dan container umum. Tidak ada styling visual detail komponen
+ * di sini (itu di components.css) — murni positioning & structure.
+ * -----------------------------------------------------------------------
+ */
+
+.shell {
+  display: grid;
+  grid-template-columns: var(--sidebar-width) 1fr;
+  min-height: 100vh;
+  transition: grid-template-columns var(--duration-base) var(--ease-in-out);
+}
+
+.shell--collapsed {
+  grid-template-columns: var(--sidebar-width-collapsed) 1fr;
+}
+
+.shell__sidebar {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  z-index: var(--z-sidebar);
+  border-right: 1px solid var(--color-border);
+  background: var(--color-surface);
+}
+
+.shell__main {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.shell__content {
+  flex: 1;
+  width: 100%;
+  max-width: var(--content-max-width);
+  margin-inline: auto;
+  padding: var(--space-8);
+}
+
+/* Auth screens (login) — di luar shell */
+.auth-screen {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.auth-screen__panel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-8);
+}
+
+.auth-screen__form-wrap {
+  width: 100%;
+  max-width: 380px;
+}
+
+.auth-screen__brand {
+  position: relative;
+  background: var(--color-surface);
+  border-right: 1px solid var(--color-border);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: var(--space-10);
+}
+
+/* Page header pattern */
+.page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
+}
+
+.page-header__text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.page-header__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-shrink: 0;
+}
+
+/* Grid utilities */
+.grid {
+  display: grid;
+  gap: var(--space-5);
+}
+
+.grid-cols-2 { grid-template-columns: repeat(2, 1fr); }
+.grid-cols-3 { grid-template-columns: repeat(3, 1fr); }
+.grid-cols-4 { grid-template-columns: repeat(4, 1fr); }
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.row-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-5);
+}
+
+.dashboard-grid__wide {
+  grid-column: span 2;
+}
+
+.dashboard-grid__full {
+  grid-column: 1 / -1;
+}
+
+.section {
+  margin-bottom: var(--space-8);
+}
+
+.section:last-child {
+  margin-bottom: 0;
+}

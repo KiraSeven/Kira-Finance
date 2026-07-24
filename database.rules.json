@@ -1,0 +1,28 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+
+    "kira-finance:meta": {
+      ".read": true,
+      ".write": "auth != null"
+    },
+
+    "kira-finance:users": {
+      ".read": "auth != null",
+      "$uid": {
+        ".write": "auth != null && (auth.uid === $uid || root.child('kira-finance:users').child(auth.uid).child('role').val() === 'admin')"
+      }
+    },
+
+    "kira-finance:accounts":  { ".read": "auth != null", ".write": "auth != null" },
+    "kira-finance:income":    { ".read": "auth != null", ".write": "auth != null" },
+    "kira-finance:expense":   { ".read": "auth != null", ".write": "auth != null" },
+    "kira-finance:budget":    { ".read": "auth != null", ".write": "auth != null" },
+    "kira-finance:journal":   { ".read": "auth != null", ".write": "auth != null" },
+    "kira-finance:documents": { ".read": "auth != null", ".write": "auth != null" },
+    "kira-finance:settings":  { ".read": "auth != null", ".write": "auth != null" },
+    "kira-finance:license":   { ".read": "auth != null", ".write": "auth != null" },
+    "kira-finance:sequence":  { ".read": "auth != null", ".write": "auth != null" }
+  }
+}

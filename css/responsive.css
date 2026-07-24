@@ -1,0 +1,163 @@
+/**
+ * responsive.css
+ * -----------------------------------------------------------------------
+ * Breakpoint overrides. Mobile-first di komponen dasar, file ini menangani
+ * penyesuaian untuk layar sempit (sidebar jadi drawer, grid collapse, dsb).
+ * -----------------------------------------------------------------------
+ */
+
+/* ---------- Desktop kecil / laptop (<=1280px) ---------- */
+@media (max-width: 1280px) {
+  .dashboard-grid { grid-template-columns: repeat(2, 1fr); }
+  .grid-cols-4 { grid-template-columns: repeat(2, 1fr); }
+  .grid-cols-3 { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ---------- Tablet (<=1024px) ---------- */
+@media (max-width: 1024px) {
+  .shell {
+    grid-template-columns: var(--sidebar-width-collapsed) 1fr;
+  }
+
+  .shell__sidebar .sidebar__brand-name,
+  .shell__sidebar .sidebar__group-label,
+  .shell__sidebar .sidebar__link-label,
+  .shell__sidebar .sidebar__user-meta {
+    display: none;
+  }
+
+  .shell__sidebar .sidebar__link {
+    justify-content: center;
+    padding: 0;
+  }
+
+  .shell__sidebar .sidebar__user {
+    justify-content: center;
+    padding: var(--space-2);
+  }
+
+  .auth-screen {
+    grid-template-columns: 1fr;
+  }
+
+  .auth-screen__brand {
+    display: none;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---------- Mobile (<=768px) ---------- */
+@media (max-width: 768px) {
+  .shell {
+    grid-template-columns: 1fr;
+  }
+
+  .shell__sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 260px;
+    height: 100vh;
+    transform: translateX(-100%);
+    transition: transform var(--duration-base) var(--ease-in-out);
+    box-shadow: var(--shadow-xl);
+  }
+
+  .shell__sidebar.is-open {
+    transform: translateX(0);
+  }
+
+  .shell__sidebar.is-open .sidebar__brand-name,
+  .shell__sidebar.is-open .sidebar__group-label,
+  .shell__sidebar.is-open .sidebar__link-label,
+  .shell__sidebar.is-open .sidebar__user-meta {
+    display: block;
+  }
+
+  .shell__sidebar.is-open .sidebar__link {
+    justify-content: flex-start;
+    padding: 0 var(--space-3);
+  }
+
+  .sidebar-scrim {
+    position: fixed;
+    inset: 0;
+    background: rgba(6, 9, 17, 0.6);
+    z-index: calc(var(--z-sidebar) - 1);
+  }
+
+  .shell__content {
+    padding: var(--space-4);
+    padding-top: var(--space-16);
+  }
+
+  .mobile-menu-btn {
+    display: flex;
+  }
+
+  .dashboard-grid,
+  .grid-cols-2,
+  .grid-cols-3,
+  .grid-cols-4 {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-grid__wide {
+    grid-column: span 1;
+  }
+
+  .page-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .page-header__actions {
+    justify-content: flex-end;
+  }
+
+  .datatable__toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .datatable__search {
+    width: 100%;
+  }
+
+  .table-wrap {
+    overflow-x: auto;
+  }
+
+  .table {
+    min-width: 640px;
+  }
+
+  .modal {
+    max-width: calc(100vw - var(--space-6) * 2);
+  }
+
+  .toast-stack {
+    left: var(--space-4);
+    right: var(--space-4);
+    width: auto;
+    bottom: var(--space-4);
+  }
+}
+
+/* ---------- Mobile kecil (<=420px) ---------- */
+@media (max-width: 420px) {
+  .shell__content {
+    padding: var(--space-3);
+  }
+
+  .card {
+    padding: var(--space-4);
+  }
+
+  .metric-card__value {
+    font-size: var(--text-xl);
+  }
+}

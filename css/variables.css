@@ -1,0 +1,163 @@
+/**
+ * variables.css
+ * -----------------------------------------------------------------------
+ * Design token system — satu-satunya sumber kebenaran untuk warna, tipografi,
+ * spacing, radius, shadow, dan motion di seluruh aplikasi.
+ * JANGAN hardcode nilai warna/spacing di file CSS lain — selalu pakai var(--...).
+ *
+ * Arah desain: "Cosmic ledger." Base navy-teal gelap dengan glow halus,
+ * senada dengan brand Kira Solution (landing page) — aksen sinyal cyan→biru
+ * (bukan lagi ledger gold) dipakai untuk aksi utama, active state, dan
+ * angka penting, agar dashboard KIRA Finance terasa satu keluarga produk
+ * dengan situs utamanya.
+ * -----------------------------------------------------------------------
+ */
+
+:root {
+  /* ---------------------------------------------------------------------
+   * COLOR — Surfaces (navy-ink scale)
+   * ------------------------------------------------------------------- */
+  --color-canvas: #070C18;          /* latar belakang utama aplikasi */
+  --color-surface: #0D1526;         /* card, panel */
+  --color-surface-raised: #131E33;  /* card yang elevated / hover */
+  --color-surface-overlay: #182544; /* modal, dropdown, popover */
+  --color-border: rgba(148, 197, 224, 0.10);
+  --color-border-strong: rgba(148, 197, 224, 0.20);
+  --color-border-hairline: rgba(148, 197, 224, 0.06);
+
+  /* COLOR — Text */
+  --color-text-primary: #F1F4F9;
+  --color-text-secondary: #A6B0C3;
+  --color-text-tertiary: #6B7590;
+  --color-text-disabled: #454E64;
+  --color-text-inverse: #0A0F1C;
+
+  /* COLOR — Brand / signature accent (cyan → biru, senada Kira Solution) */
+  --color-accent: #22D3EE;
+  --color-accent-strong: #67E8F9;
+  --color-accent-soft: rgba(34, 211, 238, 0.14);
+  --color-accent-border: rgba(34, 211, 238, 0.35);
+  --color-accent-ink: #062028; /* teks di atas background accent solid */
+  --color-accent-gradient: linear-gradient(135deg, #2563EB 0%, #22D3EE 100%);
+
+  /* COLOR — Secondary accent (indigo, dipakai untuk link/info/chart kedua) */
+  --color-secondary: #818CF8;
+  --color-secondary-soft: rgba(129, 140, 248, 0.14);
+
+  /* COLOR — Semantic (status keuangan) */
+  --color-income: #34D399;
+  --color-income-soft: rgba(52, 211, 153, 0.14);
+  --color-income-border: rgba(52, 211, 153, 0.32);
+
+  --color-expense: #F87171;
+  --color-expense-soft: rgba(248, 113, 113, 0.14);
+  --color-expense-border: rgba(248, 113, 113, 0.32);
+
+  --color-warning: #FBBF24;
+  --color-warning-soft: rgba(251, 191, 36, 0.14);
+
+  --color-danger: #F87171;
+  --color-danger-soft: rgba(248, 113, 113, 0.14);
+
+  --color-info: #38BDF8;
+  --color-info-soft: rgba(56, 189, 248, 0.14);
+
+  --color-success: #34D399;
+  --color-success-soft: rgba(52, 211, 153, 0.14);
+
+  /* COLOR — Data visualization (chart series, urut prioritas) */
+  --chart-1: #22D3EE;
+  --chart-2: #818CF8;
+  --chart-3: #34D399;
+  --chart-4: #FBBF24;
+  --chart-5: #F87171;
+  --chart-6: #7C8AA8;
+
+  /* ---------------------------------------------------------------------
+   * TYPOGRAPHY
+   * ------------------------------------------------------------------- */
+  --font-display: 'Sora', 'Inter', -apple-system, sans-serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', 'SFMono-Regular', Menlo, monospace;
+
+  --text-xs: 0.75rem;    /* 12px — caption, label kecil */
+  --text-sm: 0.8125rem;  /* 13px — body kecil, tabel */
+  --text-base: 0.9375rem;/* 15px — body default */
+  --text-md: 1.0625rem;  /* 17px — subtitle */
+  --text-lg: 1.25rem;    /* 20px — heading kecil */
+  --text-xl: 1.5rem;     /* 24px — heading section */
+  --text-2xl: 1.875rem;  /* 30px — heading halaman */
+  --text-3xl: 2.375rem;  /* 38px — angka besar / hero metric */
+
+  --leading-tight: 1.2;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.7;
+
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+  --weight-extrabold: 800;
+
+  --tracking-tight: -0.02em;
+  --tracking-normal: 0;
+  --tracking-wide: 0.04em;
+
+  /* ---------------------------------------------------------------------
+   * SPACING (skala 4px)
+   * ------------------------------------------------------------------- */
+  --space-1: 0.25rem;  /* 4px */
+  --space-2: 0.5rem;   /* 8px */
+  --space-3: 0.75rem;  /* 12px */
+  --space-4: 1rem;     /* 16px */
+  --space-5: 1.25rem;  /* 20px */
+  --space-6: 1.5rem;   /* 24px */
+  --space-8: 2rem;     /* 32px */
+  --space-10: 2.5rem;  /* 40px */
+  --space-12: 3rem;    /* 48px */
+  --space-16: 4rem;    /* 64px */
+  --space-20: 5rem;    /* 80px */
+
+  /* ---------------------------------------------------------------------
+   * RADIUS
+   * ------------------------------------------------------------------- */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+  --radius-full: 999px;
+
+  /* ---------------------------------------------------------------------
+   * SHADOW (elevation di atas base gelap)
+   * ------------------------------------------------------------------- */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.24);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.32);
+  --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.40);
+  --shadow-xl: 0 24px 64px rgba(0, 0, 0, 0.48);
+  --shadow-accent-glow: 0 0 0 1px var(--color-accent-border), 0 8px 24px rgba(34, 211, 238, 0.18);
+  --shadow-focus-ring: 0 0 0 3px rgba(34, 211, 238, 0.35);
+
+  /* ---------------------------------------------------------------------
+   * LAYOUT
+   * ------------------------------------------------------------------- */
+  --sidebar-width: 264px;
+  --sidebar-width-collapsed: 76px;
+  --navbar-height: 64px;
+  --content-max-width: 1440px;
+  --z-navbar: 100;
+  --z-sidebar: 90;
+  --z-dropdown: 200;
+  --z-modal-backdrop: 900;
+  --z-modal: 910;
+  --z-toast: 950;
+  --z-loader: 999;
+
+  /* ---------------------------------------------------------------------
+   * MOTION
+   * ------------------------------------------------------------------- */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --duration-fast: 120ms;
+  --duration-base: 200ms;
+  --duration-slow: 360ms;
+}
