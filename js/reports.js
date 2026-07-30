@@ -8,11 +8,17 @@
  */
 
 import { getIncomeStatement, getMonthlyCashFlow, getCashPosition } from '../services/report.service.js';
+import { listIncome } from '../services/income.service.js';
+import { listExpense } from '../services/expense.service.js';
+import { listAccounts } from '../services/account.service.js';
+import { getBudgetRealization } from '../services/budget.service.js';
 import { createDonutChart, createBarChart } from '../components/chart.js';
 import { createTable } from '../components/table.js';
 import { formatCurrency, todayInputValue, downloadFile, formatDate } from './utils.js';
 import { exportToExcel } from './excel-export.js';
 import { toastSuccess, toastError } from '../components/toast.js';
+import * as storage from './storage.js';
+import { STORAGE_KEYS, TRANSACTION_STATUS } from './config.js';
 
 const TABS = [
   { key: 'surplus', label: 'Surplus / Defisit' },
@@ -154,14 +160,29 @@ export async function render(container) {
   await renderTab();
 }
 
-/** Bangun 1 file Excel berisi seluruh laporan (5 sheet) untuk rentang tanggal terpilih */
+const STATUS_LABEL = {
+  [TRANSACTION_STATUS.DRAFT]: 'Draft',
+  [TRANSACTION_STATUS.POSTED]: 'Posted',
+  [TRANSACTION_STATUS.VOID]: 'Void',
+};
+
+/** Bangun 1 file Excel super-detail (9 sheet) berisi seluruh data aplikasi untuk rentang tanggal terpilih */
 async function exportReportsToExcel({ from, to }) {
-  const [statement, cashflow, positions] = await Promise.all([
+  const [statement, cashflow, positions, incomeRows, expenseRows, accounts, documents] = await Promise.all([
     getIncomeStatement({ from, to }),
     getMonthlyCashFlow(12),
     getCashPosition(),
+    listIncome({ from, to }),
+    listExpense({ from, to }),
+    listAccounts(),
+    storage.getAll(STORAGE_KEYS.DOCUMENTS),
   ]);
 
+  // Periode anggaran dipakai bulan dari tanggal "to" (biasanya bulan berjalan)
+  const budgetPeriod = (to || todayInputValue()).slice(0, 7);
+  const budgetRealization = await getBudgetRealization(budgetPeriod);
+
+  const accountName = (id) => accounts.find((a) => a.id === id)?.name || '(Akun tidak diketahui)';
   const periodLabel = `Periode ${formatDate(from)} — ${formatDate(to)}`;
 
   await exportToExcel({
@@ -182,8 +203,25 @@ async function exportReportsToExcel({ from, to }) {
         ],
       },
       {
+        name: 'Detail Pemasukan',
+        title: 'Detail Transaksi Pemasukan',
+        subtitle: `${periodLabel} — tiap baris = satu transaksi`,
+        columns: [
+          { header: 'No. Dokumen', key: 'docNumber', type: 'text', width: 14 },
+          { header: 'Tanggal', key: 'date', type: 'date', width: 13 },
+          { header: 'Kategori', key: 'category', type: 'text', width: 16 },
+          { header: 'Keterangan', key: 'description', type: 'text', width: 32 },
+          { header: 'Dari / Pembayar', key: 'payer', type: 'text', width: 24 },
+          { header: 'Akun Tujuan', key: 'accountId', type: 'text', width: 22, getValue: (r) => accountName(r.accountId) },
+          { header: 'Jumlah', key: 'amount', type: 'currency', width: 18 },
+          { header: 'Status', key: 'status', type: 'text', width: 12, getValue: (r) => STATUS_LABEL[r.status] || r.status },
+        ],
+        rows: incomeRows,
+        totals: ['amount'],
+      },
+      {
         name: 'Pemasukan per Kategori',
-        title: 'Pemasukan per Kategori',
+        title: 'Rekap Pemasukan per Kategori',
         subtitle: periodLabel,
         columns: [
           { header: 'Kategori', key: 'category', type: 'text', width: 26 },
@@ -193,8 +231,25 @@ async function exportReportsToExcel({ from, to }) {
         totals: ['total'],
       },
       {
+        name: 'Detail Pengeluaran',
+        title: 'Detail Transaksi Pengeluaran',
+        subtitle: `${periodLabel} — tiap baris = satu transaksi`,
+        columns: [
+          { header: 'No. Dokumen', key: 'docNumber', type: 'text', width: 14 },
+          { header: 'Tanggal', key: 'date', type: 'date', width: 13 },
+          { header: 'Kategori', key: 'category', type: 'text', width: 18 },
+          { header: 'Keterangan', key: 'description', type: 'text', width: 32 },
+          { header: 'Kepada / Penerima', key: 'recipient', type: 'text', width: 24 },
+          { header: 'Akun Sumber', key: 'accountId', type: 'text', width: 22, getValue: (r) => accountName(r.accountId) },
+          { header: 'Jumlah', key: 'amount', type: 'currency', width: 18 },
+          { header: 'Status', key: 'status', type: 'text', width: 12, getValue: (r) => STATUS_LABEL[r.status] || r.status },
+        ],
+        rows: expenseRows,
+        totals: ['amount'],
+      },
+      {
         name: 'Pengeluaran per Kategori',
-        title: 'Pengeluaran per Kategori',
+        title: 'Rekap Pengeluaran per Kategori',
         subtitle: periodLabel,
         columns: [
           { header: 'Kategori', key: 'category', type: 'text', width: 26 },
@@ -202,6 +257,21 @@ async function exportReportsToExcel({ from, to }) {
         ],
         rows: statement.expenseByCategory,
         totals: ['total'],
+      },
+      {
+        name: 'Anggaran vs Realisasi',
+        title: 'Anggaran (RAB) vs Realisasi',
+        subtitle: `Periode ${budgetPeriod}`,
+        columns: [
+          { header: 'Kategori', key: 'category', type: 'text', width: 22 },
+          { header: 'Anggaran (Rencana)', key: 'plannedAmount', type: 'currency', width: 20 },
+          { header: 'Realisasi', key: 'realized', type: 'currency', width: 20 },
+          { header: 'Sisa', key: 'remaining', type: 'currency', width: 20 },
+          { header: 'Terpakai (%)', key: 'percent', type: 'number', width: 14, getValue: (r) => Math.round(r.percent) },
+          { header: 'Catatan', key: 'notes', type: 'text', width: 26 },
+        ],
+        rows: budgetRealization,
+        totals: ['plannedAmount', 'realized', 'remaining'],
       },
       {
         name: 'Arus Kas Bulanan',
@@ -226,6 +296,18 @@ async function exportReportsToExcel({ from, to }) {
         ],
         rows: positions,
         totals: ['balance'],
+      },
+      {
+        name: 'Dokumen & Bukti',
+        title: 'Daftar Dokumen & Bukti Transaksi',
+        subtitle: 'Seluruh dokumen tersimpan (tidak difilter periode)',
+        columns: [
+          { header: 'Nama Dokumen', key: 'name', type: 'text', width: 28 },
+          { header: 'Kategori', key: 'category', type: 'text', width: 18 },
+          { header: 'Tanggal', key: 'date', type: 'date', width: 13 },
+          { header: 'Nama File', key: 'fileName', type: 'text', width: 26 },
+        ],
+        rows: documents,
       },
     ],
   });

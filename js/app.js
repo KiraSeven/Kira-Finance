@@ -131,9 +131,6 @@ function renderLoginPage() {
             <span class="field__error" data-login-error style="display:none;"></span>
             <button type="submit" class="btn btn--primary btn--block" data-login-submit>Masuk</button>
           </form>
-          <p class="text-tertiary" style="font-size: var(--text-xs);">
-            Akun demo: <span class="mono">admin@sekolah.sch.id</span> / <span class="mono">admin123</span>
-          </p>
         </div>
       </div>
     </div>

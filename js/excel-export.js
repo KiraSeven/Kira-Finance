@@ -23,7 +23,6 @@ const EXCELJS_CDN = 'https://esm.sh/exceljs@4.4.0';
 // Warna brand (senada design token di variables.css) untuk header sheet.
 const HEADER_FILL = 'FF2563EB';   // biru -> selaras --color-accent-gradient
 const HEADER_TEXT = 'FFFFFFFF';
-const ZEBRA_FILL = 'FF0D1526';    // senada --color-surface
 const BORDER_COLOR = 'FF3A4A63';
 const TITLE_TEXT = 'FF22D3EE';    // cyan -> selaras --color-accent
 
@@ -130,9 +129,6 @@ function buildSheet(workbook, { name, title, subtitle, columns, rows, totals = [
       applyValueAndFormat(cell, rawValue, col.type);
       cell.alignment = { vertical: 'middle', horizontal: col.align || (col.type === 'currency' || col.type === 'number' ? 'right' : 'left') };
       cell.border = THIN_BORDER;
-      if (rowIdx % 2 === 1) {
-        cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: ZEBRA_FILL } };
-      }
     });
     cursorRow += 1;
   });
